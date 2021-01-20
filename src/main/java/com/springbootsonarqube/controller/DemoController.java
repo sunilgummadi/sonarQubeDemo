@@ -20,25 +20,26 @@ public class DemoController {
 
 	@Autowired
 	private LoginService loginService;
-	@RequestMapping(value = "/hi",method = RequestMethod.GET)
+
+	@RequestMapping(value = "/hi", method = RequestMethod.GET)
 	public String msg() {
-		//TODO
-		int a;
 		return "hello";
 	}
-	
+
 	@PutMapping("/create")
-	public ResponseEntity<User> createUser(@RequestBody User user){
-		return new ResponseEntity<>(loginService.save(user),HttpStatus.OK);
+	public ResponseEntity<User> createUser(@RequestBody User user) {
+		return new ResponseEntity<>(loginService.save(user), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getAll")
-	public ResponseEntity<List<User>> getALlUsers(){
+	public ResponseEntity<List<User>> getALlUsers() {
 		try {
 			List<User> users = loginService.getAll();
-			if(users.size() == 0)
+			if (users.size() == 0)
+				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(users, HttpStatus.OK);
 		} catch (Exception e) {
-			// TODO: handle exception
+			return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
 		}
 	}
 }
